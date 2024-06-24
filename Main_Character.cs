@@ -8,6 +8,19 @@ public partial class Main_Character : CharacterBody2D
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	
+	public override void _Ready() 
+	{
+		foreach (Coin coin in GetTree().GetNodesInGroup("Coins"))
+		{
+			coin.Connect("CoinCollected", new Callable(this, nameof(OnCoinCollected)));
+		}
+	}
+	
+	private void OnCoinCollected()
+	{
+		GD.Print("+1");
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{

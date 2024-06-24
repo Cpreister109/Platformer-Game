@@ -1,5 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://pmgp1qu2frts"]
+[gd_scene load_steps=17 format=3 uid="uid://pmgp1qu2frts"]
 
+[ext_resource type="Script" path="res://Coin.cs" id="1_6yq8t"]
 [ext_resource type="Texture2D" uid="uid://dsqkj2qk01p1n" path="res://brackeys_platformer_assets/sprites/coin.png" id="1_fv72g"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_27j1d"]
@@ -97,7 +98,8 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_fev8h"]
 radius = 5.0
 
-[node name="Area2D" type="Area2D"]
+[node name="coin" type="Area2D"]
+script = ExtResource("1_6yq8t")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_cgt2g")
