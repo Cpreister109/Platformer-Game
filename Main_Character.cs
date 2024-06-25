@@ -6,11 +6,15 @@ public partial class Main_Character : CharacterBody2D
 	public const float Speed = 180f;
 	public const float JumpVelocity = -350.0f;
 
+	private Vector2 _startPosition;
+
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	
 	public override void _Ready() 
 	{
+		_startPosition = Position + new Vector2(0, -20);
+
 		foreach (Coin coin in GetTree().GetNodesInGroup("Coins"))
 		{
 			coin.Connect("CoinCollected", new Callable(this, nameof(OnCoinCollected)));
@@ -48,5 +52,11 @@ public partial class Main_Character : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+
+	public void Restart() 
+	{
+		Position = _startPosition;
+		Velocity = Vector2.Zero;
 	}
 }

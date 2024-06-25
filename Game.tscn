@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bi7iveu5evk2b"]
+[gd_scene load_steps=15 format=3 uid="uid://bi7iveu5evk2b"]
 
 [ext_resource type="PackedScene" uid="uid://b341oagxjj5oh" path="res://Main_Character.tscn" id="1_riwk5"]
 [ext_resource type="Texture2D" uid="uid://b0yqiruhklu1t" path="res://brackeys_platformer_assets/sprites/world_tileset.png" id="2_tkyum"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://pp4olvto2vhi" path="res://rock_platform.tscn" id="5_fil6i"]
 [ext_resource type="PackedScene" uid="uid://bda176040y17y" path="res://grass_platform.tscn" id="6_uk8vb"]
 [ext_resource type="PackedScene" uid="uid://pmgp1qu2frts" path="res://Coin.tscn" id="7_3cskk"]
+[ext_resource type="PackedScene" uid="uid://d2dceuwh7bt3n" path="res://kill_zone.tscn" id="8_xbinq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k5hiy"]
 texture = ExtResource("2_tkyum")
@@ -446,6 +447,8 @@ _data = {
 "back_forth": SubResource("Animation_5ohfo")
 }
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_3w0ig"]
+
 [node name="Game" type="Node2D"]
 position = Vector2(1, 0)
 
@@ -455,6 +458,9 @@ position = Vector2(0, -14)
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 position = Vector2(0, 14)
 zoom = Vector2(4, 4)
+limit_left = -570
+limit_right = 570
+limit_bottom = 174
 position_smoothing_enabled = true
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -548,3 +554,10 @@ position = Vector2(405, -365)
 
 [node name="Coin20" parent="." groups=["Coins"] instance=ExtResource("7_3cskk")]
 position = Vector2(391, -317)
+
+[node name="world_boundary" parent="." instance=ExtResource("8_xbinq")]
+position = Vector2(330, 193)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="world_boundary"]
+position = Vector2(0, -16)
+shape = SubResource("WorldBoundaryShape2D_3w0ig")
