@@ -56,7 +56,10 @@ public partial class Main_Character : CharacterBody2D
 
 	public void Restart() 
 	{
+		GetTree().ReloadCurrentScene();
+		
 		Position = _startPosition;
 		Velocity = Vector2.Zero;
+		GD.Print("YOU DIED!");
 	}
 }
