@@ -4,8 +4,13 @@ using System.Runtime.CompilerServices;
 
 public partial class kill_zone : Area2D
 {
+
+    private Timer _restartTimer;
+
     public override void _Ready()
     {
+        _restartTimer = GetNode<Timer>("kill_timer");
+        _restartTimer.Connect("timeout", new Callable(this, nameof(OnRestartTimeout)));
         Connect("body_entered", new Callable(this, nameof(OnBodyEntered)));
     }
 
@@ -13,7 +18,15 @@ public partial class kill_zone : Area2D
     {
         if (body is Main_Character mainCharacter)
         {
-            mainCharacter.Restart();
+            Engine.TimeScale = 0.5f;
+            _restartTimer.Start();
         }
     }
+
+    private void OnRestartTimeout()
+    {
+        Engine.TimeScale = 1.0f;
+        GetTree().ReloadCurrentScene();
+    }
+
 }
