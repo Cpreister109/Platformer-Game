@@ -53,10 +53,9 @@ public partial class Main_Character : CharacterBody2D
 
 			velocity.X = direction.X * Speed;
 
-			if (direction.X != 0 && IsOnFloor())
+			if (direction.X != 0)
 			{
 				_animatedSprite2D.FlipH = direction.X < 0;
-				_animatedSprite2D.Play("run");
 			}
 		
 		}
@@ -64,10 +63,22 @@ public partial class Main_Character : CharacterBody2D
 		{
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 
-			if (IsOnFloor())
+		}
+
+		if (IsOnFloor())
+		{
+			if (direction.X != 0)
+			{
+				_animatedSprite2D.Play("run");
+			}
+			else
 			{
 				_animatedSprite2D.Play("idle");
 			}
+		}
+		else
+		{
+			_animatedSprite2D.Play("jump");
 		}
 
 		Velocity = velocity;
