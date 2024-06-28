@@ -5,20 +5,26 @@ public partial class Main_Character : CharacterBody2D
 {
 	public const float Speed = 180f;
 	public const float JumpVelocity = -350.0f;
-
+	public CollisionShape2D _collisionShape2D;
 	private Vector2 _startPosition;
-
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
+	public AnimatedSprite2D _animatedSprite2D;
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	
 	public override void _Ready() 
 	{
+		_collisionShape2D = GetNode<CollisionShape2D>("Player_Collision");
+		_animatedSprite2D = GetNode<AnimatedSprite2D>("Player_Sprite");
 		_startPosition = Position + new Vector2(0, -20);
 
 		foreach (Coin coin in GetTree().GetNodesInGroup("Coins"))
 		{
 			coin.Connect("CoinCollected", new Callable(this, nameof(OnCoinCollected)));
 		}
+	}
+
+	public void DisabledCollision()
+	{
+		_collisionShape2D.QueueFree();
 	}
 	
 	private void OnCoinCollected()
@@ -30,24 +36,38 @@ public partial class Main_Character : CharacterBody2D
 	{
 		Vector2 velocity = Velocity;
 
-		// Add the gravity.
 		if (!IsOnFloor())
+		{
 			velocity.Y += gravity * (float)delta;
+		}
 
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+		if (Input.IsActionJustPressed("jump") && IsOnFloor())
+			{
 			velocity.Y = JumpVelocity;
+			_animatedSprite2D.Play("jump");
+			}
 
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+		Vector2 direction = Input.GetVector("move_left", "move_right", "jump", "drop");
 		if (direction != Vector2.Zero)
 		{
+
 			velocity.X = direction.X * Speed;
+
+			if (direction.X != 0 && IsOnFloor())
+			{
+				_animatedSprite2D.FlipH = direction.X < 0;
+				_animatedSprite2D.Play("run");
+			}
+		
 		}
 		else
 		{
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+
+			if (IsOnFloor())
+			{
+				_animatedSprite2D.Play("idle");
+			}
 		}
 
 		Velocity = velocity;

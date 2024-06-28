@@ -6,6 +6,7 @@ public partial class kill_zone : Area2D
 {
 
     private Timer _restartTimer;
+    private CollisionShape2D _collisionShape;
 
     public override void _Ready()
     {
@@ -16,8 +17,10 @@ public partial class kill_zone : Area2D
 
     private void OnBodyEntered(Node body) 
     {
+
         if (body is Main_Character mainCharacter)
         {
+            mainCharacter.DisabledCollision();
             Engine.TimeScale = 0.5f;
             _restartTimer.Start();
         }
