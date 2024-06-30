@@ -8,12 +8,14 @@ public partial class Main_Character : CharacterBody2D
 	public CollisionShape2D _collisionShape2D;
 	private Vector2 _startPosition;
 	public AnimatedSprite2D _animatedSprite2D;
+	private Label _playerLabel;
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	
 	public override void _Ready() 
 	{
 		_collisionShape2D = GetNode<CollisionShape2D>("Player_Collision");
 		_animatedSprite2D = GetNode<AnimatedSprite2D>("Player_Sprite");
+		_playerLabel = GetNode<Label>("player_label");
 		_startPosition = Position + new Vector2(0, -20);
 
 		foreach (Coin coin in GetTree().GetNodesInGroup("Coins"))
@@ -30,6 +32,11 @@ public partial class Main_Character : CharacterBody2D
 	private void OnCoinCollected()
 	{
 		GD.Print("+1");
+	}
+
+	public void UpdateCoinLabel(int score)
+	{
+		_playerLabel.Text = score.ToString();
 	}
 
 	public override void _PhysicsProcess(double delta)
