@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://bgs4ql1mwsq8w"]
 
-[ext_resource type="Script" path="res://green_enemy.cs" id="1_rum2m"]
+[ext_resource type="Script" path="res://scripts/green_enemy.cs" id="1_rum2m"]
 [ext_resource type="Texture2D" uid="uid://dn3u1pal83w6x" path="res://brackeys_platformer_assets/sprites/slime_green.png" id="1_u3kcs"]
-[ext_resource type="PackedScene" uid="uid://d2dceuwh7bt3n" path="res://kill_zone.tscn" id="2_d1rb2"]
+[ext_resource type="PackedScene" uid="uid://d2dceuwh7bt3n" path="res://assets/kill_zone.tscn" id="2_d1rb2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bhy1j"]
 atlas = ExtResource("1_u3kcs")
