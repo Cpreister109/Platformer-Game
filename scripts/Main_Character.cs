@@ -9,14 +9,19 @@ public partial class Main_Character : CharacterBody2D
 	private Vector2 _startPosition;
 	public AnimatedSprite2D _animatedSprite2D;
 	private Label _playerLabel;
+	private Label _winLabel;
+	private int score = 0;
+	private int _totalCoins;
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	
 	public override void _Ready() 
 	{
 		_collisionShape2D = GetNode<CollisionShape2D>("Player_Collision");
 		_animatedSprite2D = GetNode<AnimatedSprite2D>("Player_Sprite");
-		_playerLabel = GetNode<Label>("player_label");
+		_playerLabel = GetNode<Label>("Camera2D/player_label");
+		_winLabel = GetNode<Label>("Camera2D/win_label");
 		_startPosition = Position + new Vector2(0, -20);
+		_totalCoins = GetTree().GetNodesInGroup("Coins").Count;
 
 		foreach (Coin coin in GetTree().GetNodesInGroup("Coins"))
 		{
@@ -31,12 +36,14 @@ public partial class Main_Character : CharacterBody2D
 	
 	private void OnCoinCollected()
 	{
-		GD.Print("+1");
-	}
-
-	public void UpdateCoinLabel(int score)
-	{
+		score++;
 		_playerLabel.Text = score.ToString();
+		
+		if (score >= _totalCoins)
+		{
+			GetTree().Paused = true;
+			_winLabel.Text = "YOU WIN!";
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -94,10 +101,10 @@ public partial class Main_Character : CharacterBody2D
 
 	public void Restart() 
 	{
+
 		GetTree().ReloadCurrentScene();
 		
 		Position = _startPosition;
 		Velocity = Vector2.Zero;
-		GD.Print("YOU DIED!");
 	}
 }
